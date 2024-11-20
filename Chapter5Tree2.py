@@ -1,48 +1,47 @@
-#Updated code
+#3rd try updating python code
 class Node:
-    def __init__(self, data):
+    def __init__(self, val):
+        self.data = val
         self.left = None
         self.right = None
-        self.data = data
 
-def inputFunction():
+def functionInput():
     root = None
-    while True:
-        values = input("Enter values or Q to stop: ")
-        if values != "Q":
-            values = int(values)
-            root = insert(root, values)
-        else:
-            break
+    dataVal = int(input("Enter values or -1 to finish: "))
+    while dataVal != -1:
+        root = insertFunction(root, dataVal)
+        dataVal = int(input("Enter values or -1 to finish: "))
     return root
 
-def insert(root, data):
-    if not root:
-        return Node(data)
-    if data < root.data:
-        root.left = insert(root.left, data)
-    if data > root.data:
-        root.right = insert(root.right, data)
-    return root
+def insertFunction(root, val):
+    if root is None:
+        return Node(val)
+    if root.data == val:
+        return root
+    if root.data < val:
+        root.right = insertFunction(root.right, val)
+    else:
+        root.left = insertFunction(root.left, val)
+    return  root
 
-def divisibleby_5(root):
+def calculateSum(root):
     if root is None:
         return 0
     sum = 0
     if root.data % 5 == 0:
-        sum = sum + root.data
-    sum = sum + divisibleby_5(root.left) + divisibleby_5(root.right)
+        sum += root.data
+    sum += calculateSum(root.left)
+    sum += calculateSum(root.right)
     return sum
 
-def printInorder(root):
+def inorder(root):
     if root is None:
         return
-    printInorder(root.left)
+    inorder(root.left)
     print(root.data, end=" ")
-    printInorder(root.right)
+    inorder(root.right)
 
-
-root = inputFunction()
-print("Inorder traversal of the Binary Search Tree:")
-printInorder(root)
-print("\nSum of nodes that are divisible by 5:", divisibleby_5(root))
+root = functionInput()
+print("Inorder traversal of BST")
+inorder(root)
+print("\nSum of nodes that are divisible by 5:", calculateSum(root))
